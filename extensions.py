@@ -9,5 +9,5 @@ migrate = Migrate()
 login_manager = LoginManager()
 csrf = CSRFProtect()
 
-login_manager.login_view = "auth.login"
+setattr(login_manager, "login_view", "auth.login")
 login_manager.login_message_category = "info"
