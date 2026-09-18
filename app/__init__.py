@@ -15,6 +15,10 @@ def create_app(config_class: type[Config] = Config) -> Flask:
     app.config.from_object(config_class)
 
     os.makedirs(BASE_DIR / "instance", exist_ok=True)
+    database_url = app.config["SQLALCHEMY_DATABASE_URI"]
+    if database_url.startswith("sqlite:///"):
+        database_path = Path(database_url.replace("sqlite:///", "", 1))
+        os.makedirs(database_path.parent, exist_ok=True)
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
     os.makedirs(Path(app.root_path) / "static" / "images", exist_ok=True)
 

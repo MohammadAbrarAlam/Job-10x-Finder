@@ -11,7 +11,7 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: DATABASE_URL
-        value: sqlite:///instance/jobfinder.db
+        value: sqlite:////tmp/jobfinder.db
       - key: FLASK_ENV
         value: production
       - key: LLM_PROVIDER
