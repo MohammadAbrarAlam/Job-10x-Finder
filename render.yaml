@@ -15,7 +15,7 @@ services:
       - key: FLASK_ENV
         value: production
       - key: LLM_PROVIDER
-        value: gemini
+        value: tavily
       - key: GEMINI_MODEL
         value: gemini/gemini-2.5-flash
       - key: OPENAI_MODEL
