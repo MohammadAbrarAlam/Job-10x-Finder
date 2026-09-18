@@ -59,3 +59,6 @@ def create_app(config_class: type[Config] = Config) -> Flask:
         return {"current_user": current_user}
 
     return app
+
+
+app = create_app()
