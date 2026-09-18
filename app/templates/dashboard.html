@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Dashboard</h2>
+    <a href="{{ url_for('jobs.results') }}" class="btn btn-primary">Search Jobs</a>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="card border-0 shadow-sm"><div class="card-body"><h6>Total jobs</h6><h3>{{ jobs|length }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card border-0 shadow-sm"><div class="card-body"><h6>Saved jobs</h6><h3>{{ saved_jobs }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card border-0 shadow-sm"><div class="card-body"><h6>Applications</h6><h3>{{ applications }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card border-0 shadow-sm"><div class="card-body"><h6>Resume</h6><h3>{% if recent_resume %}Uploaded{% else %}Pending{% endif %}</h3></div></div></div>
+  </div>
+
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <h4 class="mb-3">Upload resume</h4>
+      <form method="post" action="{{ url_for('resume.upload_resume') }}" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="input-group">
+          <input type="file" class="form-control" name="resume_file" accept=".pdf,.docx,.txt" required>
+          <button class="btn btn-primary" type="submit">Upload Resume</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

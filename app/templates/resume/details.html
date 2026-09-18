@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Resume Details{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+      <h2 class="mb-3">Resume Preview</h2>
+      <p><strong>Original file:</strong> {{ resume.original_filename }}</p>
+      <p><strong>Uploaded at:</strong> {{ resume.uploaded_at.strftime('%Y-%m-%d %H:%M') if resume.uploaded_at else 'N/A' }}</p>
+      <pre class="bg-light p-3 rounded">{{ resume.extracted_text or 'No text extracted yet.' }}</pre>
+    </div>
+  </div>
+</div>
+{% endblock %}

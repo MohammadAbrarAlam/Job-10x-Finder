@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Analytics{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4">Analytics dashboard</h2>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="card shadow-sm border-0"><div class="card-body"><h6>Total jobs discovered</h6><h3>{{ total_jobs }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card shadow-sm border-0"><div class="card-body"><h6>Jobs above threshold</h6><h3>{{ jobs_above_threshold }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card shadow-sm border-0"><div class="card-body"><h6>Saved jobs</h6><h3>{{ saved_jobs }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card shadow-sm border-0"><div class="card-body"><h6>Applications submitted</h6><h3>{{ applications_submitted }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card shadow-sm border-0"><div class="card-body"><h6>Interviews</h6><h3>{{ interviews }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card shadow-sm border-0"><div class="card-body"><h6>Offers</h6><h3>{{ offers }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card shadow-sm border-0"><div class="card-body"><h6>Average match score</h6><h3>{{ average_match_score }}%</h3></div></div></div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <h4>Application status</h4>
+          <ul class="list-group list-group-flush mt-3">
+            {% for key, value in status_counts.items() %}
+              <li class="list-group-item d-flex justify-content-between"><span>{{ key }}</span><strong>{{ value }}</strong></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <h4>Top missing skills</h4>
+          <ul class="list-group list-group-flush mt-3">
+            {% for skill, count in top_missing_skills.items() %}
+              <li class="list-group-item d-flex justify-content-between"><span>{{ skill }}</span><strong>{{ count }}</strong></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

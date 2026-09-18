@@ -1,0 +1,27 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f6f8fb;
+}
+
+.hero {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+}
+
+.card {
+    border-radius: 16px;
+}
+
+.btn {
+    border-radius: 12px;
+}
+
+.badge {
+    border-radius: 999px;
+}
+
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}

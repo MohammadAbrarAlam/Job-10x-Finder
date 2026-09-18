@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Jobs{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+          <h2 class="mb-4">Search jobs</h2>
+          <form method="post" action="{{ url_for('jobs.search_jobs') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="row g-3">
+              <div class="col-md-6"><label class="form-label">Preferred job title</label><input type="text" name="job_title" class="form-control"></div>
+              <div class="col-md-6"><label class="form-label">Total experience</label><input type="text" name="experience" class="form-control"></div>
+              <div class="col-md-6"><label class="form-label">Skills</label><input type="text" name="skills" class="form-control" placeholder="python, sql, aws"></div>
+              <div class="col-md-6"><label class="form-label">Preferred place</label><input type="text" name="preferred_place" class="form-control"></div>
+              <div class="col-md-6"><label class="form-label">Minimum match %</label><input type="number" name="min_match" class="form-control" value="60"></div>
+              <div class="col-md-6"><label class="form-label">Jobs posted within</label><select name="posted_within" class="form-select"><option value="7">7 days</option><option value="14">14 days</option><option value="30">30 days</option></select></div>
+              <div class="col-md-6"><label class="form-label">Employment type</label><select name="employment_type" class="form-select"><option value="full-time">Full-time</option><option value="contract">Contract</option></select></div>
+              <div class="col-md-6"><label class="form-label">Work mode</label><select name="work_mode" class="form-select"><option value="remote">Remote</option><option value="hybrid">Hybrid</option><option value="onsite">Onsite</option></select></div>
+              <div class="col-12"><button class="btn btn-primary" type="submit">Search Jobs</button></div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

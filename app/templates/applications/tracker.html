@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Applications{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4">Application tracker</h2>
+  {% if applications %}
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th>Job</th>
+            <th>Company</th>
+            <th>Status</th>
+            <th>Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for application in applications %}
+            <tr>
+              <td>{{ application.job.title }}</td>
+              <td>{{ application.job.company }}</td>
+              <td>
+                <form method="post" action="{{ url_for('applications.update_status', application_id=application.id) }}">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                    {% for status in ['Saved','Ready to Apply','Applied','Assessment','Interview','Offer','Rejected','Withdrawn'] %}
+                      <option value="{{ status }}" {% if application.status == status %}selected{% endif %}>{{ status }}</option>
+                    {% endfor %}
+                  </select>
+                </form>
+              </td>
+              <td>{{ application.updated_at.strftime('%Y-%m-%d') if application.updated_at else 'N/A' }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-info">No applications tracked yet.</div>
+  {% endif %}
+</div>
+{% endblock %}
