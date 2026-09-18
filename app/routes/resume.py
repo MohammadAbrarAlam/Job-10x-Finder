@@ -8,6 +8,7 @@ from flask_login import current_user, login_required
 
 from app.models.resume import Resume
 from app.services.resume_parser import ResumeParser
+from app.services.search_service import SearchService
 from extensions import db
 
 resume_bp = Blueprint("resume", __name__, url_prefix="/resume")
@@ -54,8 +55,15 @@ def upload_resume():
     db.session.add(resume)
     db.session.commit()
 
-    flash("Resume uploaded successfully and parsed for matching.", "success")
-    return redirect(url_for("resume.resume_detail", resume_id=resume.id))
+    filters = {
+        "job_title": (profile.get("preferred_roles") or ["software engineer"])[0],
+        "preferred_place": profile.get("location") or "remote",
+        "min_match": 0,
+        "max_results": 20,
+    }
+    recommendations = SearchService().save_matches(profile, filters, current_user.id, resume.id)
+    flash(f"Resume uploaded. {recommendations} matching jobs are ready.", "success")
+    return redirect(url_for("jobs.results"))
 
 
 @resume_bp.route("/<int:resume_id>")
