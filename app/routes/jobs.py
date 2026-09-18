@@ -48,7 +48,15 @@ def search_jobs():
         jobs_data = search_service.search(profile, filters)
         for job_data in jobs_data:
             match_result = MatchingService.calculate(profile, job_data)
-            job = Job.query.filter_by(source_url=job_data.get("source_url")).first()
+            application_url = (
+                job_data.get("application_url")
+                or job_data.get("apply_url")
+                or job_data.get("job_url")
+                or job_data.get("source_url")
+                or _job_board_url(job_data)
+            )
+            source_url = job_data.get("source_url") or application_url
+            job = Job.query.filter_by(source_url=source_url).first()
             if not job:
                 job = Job(
                     title=job_data.get("title") or "Role",
@@ -59,8 +67,8 @@ def search_jobs():
                     description=job_data.get("description") or "",
                     required_skills_json=job_data.get("required_skills") or profile.get("skills", [])[:5],
                     source_name=job_data.get("company") or "Public listing",
-                    source_url=job_data.get("source_url") or _job_board_url(job_data),
-                    application_url=job_data.get("application_url") or job_data.get("source_url") or _job_board_url(job_data),
+                    source_url=source_url,
+                    application_url=application_url,
                     reliability_status=job_data.get("reliability_status") or "Verified",
                     is_active=True,
                 )

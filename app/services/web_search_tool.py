@@ -40,7 +40,13 @@ class WebSearchTool:
                     "employment_type": "full-time",
                     "description": item.get("content") or item.get("snippet") or "",
                     "source_url": item.get("url") or self._job_board_url(query),
-                    "application_url": item.get("url") or self._job_board_url(query),
+                    "application_url": (
+                        item.get("application_url")
+                        or item.get("apply_url")
+                        or item.get("job_url")
+                        or item.get("url")
+                        or self._job_board_url(query)
+                    ),
                     "required_skills": [],
                     "posted_date": None,
                 }
@@ -68,7 +74,13 @@ class WebSearchTool:
                     "employment_type": "full-time",
                     "description": item.get("snippet") or "",
                     "source_url": item.get("link") or self._job_board_url(query),
-                    "application_url": item.get("link") or self._job_board_url(query),
+                    "application_url": (
+                        item.get("application_url")
+                        or item.get("apply_url")
+                        or item.get("job_url")
+                        or item.get("link")
+                        or self._job_board_url(query)
+                    ),
                     "required_skills": [],
                     "posted_date": None,
                 }
