@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: job-10x-finder
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn wsgi:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite:///instance/jobfinder.db
+      - key: FLASK_ENV
+        value: production
+      - key: LLM_PROVIDER
+        value: gemini
+      - key: GEMINI_MODEL
+        value: gemini/gemini-2.5-flash
+      - key: OPENAI_MODEL
+        value: gpt-5-mini
+      - key: MAX_CONTENT_LENGTH
+        value: "5242880"
+      - key: ALLOWED_RESUME_EXTENSIONS
+        value: pdf,docx,txt
+      - key: JOB_SEARCH_RESULT_LIMIT
+        value: "20"
+      - key: MINIMUM_MATCH_SCORE
+        value: "60"
