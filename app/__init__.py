@@ -6,7 +6,7 @@ from pathlib import Path
 from flask import Flask, render_template
 from flask_login import current_user
 
-from config import Config
+from config import BASE_DIR, Config
 from extensions import csrf, db, login_manager, migrate
 
 
@@ -14,6 +14,7 @@ def create_app(config_class: type[Config] = Config) -> Flask:
     app = Flask(__name__)
     app.config.from_object(config_class)
 
+    os.makedirs(BASE_DIR / "instance", exist_ok=True)
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
     os.makedirs(Path(app.root_path) / "static" / "images", exist_ok=True)
 
@@ -28,6 +29,7 @@ def create_app(config_class: type[Config] = Config) -> Flask:
     from app.routes.jobs import jobs_bp
     from app.routes.applications import applications_bp
     from app.routes.api import api_bp
+    from app import models
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)
@@ -35,6 +37,9 @@ def create_app(config_class: type[Config] = Config) -> Flask:
     app.register_blueprint(jobs_bp)
     app.register_blueprint(applications_bp)
     app.register_blueprint(api_bp)
+
+    with app.app_context():
+        db.create_all()
 
     @app.route("/health")
     def health():
