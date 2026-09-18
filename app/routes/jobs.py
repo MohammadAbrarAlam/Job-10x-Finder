@@ -66,7 +66,7 @@ def search_jobs():
                     employment_type=job_data.get("employment_type") or "full-time",
                     description=job_data.get("description") or "",
                     required_skills_json=job_data.get("required_skills") or profile.get("skills", [])[:5],
-                    source_name=job_data.get("company") or "Public listing",
+                    source_name=job_data.get("source_name") or job_data.get("company") or "Public listing",
                     source_url=source_url,
                     application_url=application_url,
                     reliability_status=job_data.get("reliability_status") or "Verified",
