@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from urllib.parse import quote_plus
+
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 
@@ -12,6 +14,13 @@ from app.services.search_service import SearchService
 from extensions import db
 
 jobs_bp = Blueprint("jobs", __name__, url_prefix="/jobs")
+
+
+def _job_board_url(job_data: dict) -> str:
+    query = " ".join(
+        value for value in (job_data.get("title"), job_data.get("company"), job_data.get("location")) if value
+    )
+    return f"https://www.linkedin.com/jobs/search/?keywords={quote_plus(query or 'jobs')}"
 
 
 @jobs_bp.route("/search", methods=["GET", "POST"])
@@ -50,8 +59,8 @@ def search_jobs():
                     description=job_data.get("description") or "",
                     required_skills_json=job_data.get("required_skills") or profile.get("skills", [])[:5],
                     source_name=job_data.get("company") or "Public listing",
-                    source_url=job_data.get("source_url") or "https://example.com",
-                    application_url=job_data.get("application_url") or job_data.get("source_url") or "https://example.com",
+                    source_url=job_data.get("source_url") or _job_board_url(job_data),
+                    application_url=job_data.get("application_url") or job_data.get("source_url") or _job_board_url(job_data),
                     reliability_status=job_data.get("reliability_status") or "Verified",
                     is_active=True,
                 )

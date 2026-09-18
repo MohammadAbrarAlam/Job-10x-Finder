@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 from typing import Any
+from urllib.parse import quote_plus
 
 import requests
 
@@ -38,8 +39,8 @@ class WebSearchTool:
                     "work_mode": "remote",
                     "employment_type": "full-time",
                     "description": item.get("content") or item.get("snippet") or "",
-                    "source_url": item.get("url") or "https://example.com",
-                    "application_url": item.get("url") or "https://example.com",
+                    "source_url": item.get("url") or self._job_board_url(query),
+                    "application_url": item.get("url") or self._job_board_url(query),
                     "required_skills": [],
                     "posted_date": None,
                 }
@@ -66,8 +67,8 @@ class WebSearchTool:
                     "work_mode": "remote",
                     "employment_type": "full-time",
                     "description": item.get("snippet") or "",
-                    "source_url": item.get("link") or "https://example.com",
-                    "application_url": item.get("link") or "https://example.com",
+                    "source_url": item.get("link") or self._job_board_url(query),
+                    "application_url": item.get("link") or self._job_board_url(query),
                     "required_skills": [],
                     "posted_date": None,
                 }
@@ -77,6 +78,7 @@ class WebSearchTool:
             return self._fallback_search(query, limit)
 
     def _fallback_search(self, query: str, limit: int) -> list[dict[str, Any]]:
+        fallback_url = self._job_board_url(query)
         sample_jobs = [
             {
                 "title": "Python Software Engineer",
@@ -85,8 +87,8 @@ class WebSearchTool:
                 "work_mode": "remote",
                 "employment_type": "full-time",
                 "description": "Build backend services, APIs, and cloud-native features in Python and Flask.",
-                "source_url": "https://example.com/jobs/python-software-engineer",
-                "application_url": "https://example.com/jobs/python-software-engineer",
+                "source_url": fallback_url,
+                "application_url": fallback_url,
                 "required_skills": ["python", "flask", "sql", "api"],
                 "posted_date": None,
             },
@@ -97,8 +99,8 @@ class WebSearchTool:
                 "work_mode": "hybrid",
                 "employment_type": "full-time",
                 "description": "Build data pipelines and dashboards using SQL, Python, and cloud technologies.",
-                "source_url": "https://example.com/jobs/data-engineer",
-                "application_url": "https://example.com/jobs/data-engineer",
+                "source_url": fallback_url,
+                "application_url": fallback_url,
                 "required_skills": ["python", "sql", "data", "etl"],
                 "posted_date": None,
             },
@@ -109,10 +111,14 @@ class WebSearchTool:
                 "work_mode": "remote",
                 "employment_type": "full-time",
                 "description": "Develop REST APIs, integrate data services, and improve platform resiliency.",
-                "source_url": "https://example.com/jobs/backend-engineer",
-                "application_url": "https://example.com/jobs/backend-engineer",
+                "source_url": fallback_url,
+                "application_url": fallback_url,
                 "required_skills": ["python", "api", "sql", "docker"],
                 "posted_date": None,
             },
         ]
         return sample_jobs[:limit]
+
+    @staticmethod
+    def _job_board_url(query: str) -> str:
+        return f"https://www.linkedin.com/jobs/search/?keywords={quote_plus(query)}"
